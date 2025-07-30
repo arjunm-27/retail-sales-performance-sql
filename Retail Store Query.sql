@@ -23,18 +23,28 @@ ORDER BY total_units_sold DESC;
 
 /* Total quantity of products purchased by each gender */
 
-SELECT c.gender, SUM(oi.quantity) as sales
+SELECT c.gender, SUM(oi.quantity) as items_purchased
 FROM order_items oi
 JOIN orders o ON oi.order_id = o.order_id
 JOIN customers c ON o.customer_id = c.customer_id
 GROUP BY c.gender 
-ORDER BY sales DESC;
+ORDER BY items_purchased DESC;
 
 /* Quantity of products sold in each city */
 
 SELECT c.city , SUM(oi.quantity) as sales 
 FROM order_items oi
 JOIN orders o ON oi.order_id = o.order_id
+JOIN customers c ON o.customer_id = c.customer_id
+GROUP BY c.city 
+ORDER BY sales DESC;
+
+/* Highest revenue cities */
+
+SELECT c.city , SUM(oi.quantity*selling_price) as sales 
+FROM order_items oi
+JOIN orders o ON oi.order_id = o.order_id
+JOIN products p ON p.product_id = oi.product_id
 JOIN customers c ON o.customer_id = c.customer_id
 GROUP BY c.city 
 ORDER BY sales DESC;
