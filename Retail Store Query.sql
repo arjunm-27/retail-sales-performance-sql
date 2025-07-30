@@ -10,7 +10,7 @@ GROUP BY p.product_name, p.category
 ORDER BY total_profit DESC
 LIMIT 5 ;
 
-/* Products that sold more than 75 units in 2025 */
+/* Products that sold more than 75 units in 2025. These have the most demand */
 
 SELECT 
 p.product_name,
@@ -53,8 +53,29 @@ GROUP BY p.product_name, c.gender
 ORDER BY total_units_sold DESC
 LIMIT 10;
 
+/* Products with High Markup But Low Sales. These are overpriced products with low demand */
 
+SELECT 
+p.product_name,
+(p.selling_price - p.cost_price) AS markup,
+SUM(oi.quantity) AS units_sold
+FROM products p
+LEFT JOIN order_items oi ON p.product_id = oi.product_id
+GROUP BY p.product_name, markup
+HAVING SUM(oi.quantity) < 25
+ORDER BY markup DESC;
 
+/* Most profitable category */
+
+SELECT 
+p.category,
+SUM((p.selling_price - p.cost_price) * oi.quantity) AS category_profit
+FROM 
+order_items oi
+JOIN products p ON oi.product_id = p.product_id
+GROUP BY p.category
+ORDER BY category_profit DESC
+LIMIT 1;
 
 
 
