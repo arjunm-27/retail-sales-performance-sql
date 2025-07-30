@@ -18,7 +18,7 @@ SUM(oi.quantity) AS total_units_sold
 FROM order_items oi
 JOIN products p ON oi.product_id = p.product_id
 GROUP BY p.product_name
-HAVING SUM(oi.quantity) > 75
+HAVING SUM(oi.quantity) > 85
 ORDER BY total_units_sold DESC;
 
 /* Total quantity of products purchased by each gender */
@@ -79,7 +79,7 @@ ORDER BY markup DESC;
 
 SELECT 
 p.category,
-SUM((p.selling_price - p.cost_price) * oi.quantity) AS profit
+SUM(p.selling_price * oi.quantity) AS profit
 FROM 
 order_items oi
 JOIN products p ON oi.product_id = p.product_id
